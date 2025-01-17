@@ -23,7 +23,7 @@
     <div id="deposit_form" class="operation-forms">
         <div class="form-group">
             <label for="deposit_value">Valor:</label>
-            <input type="number" id="deposit_value" class="form-control" step="0.01" placeholder="Digite o valor para depositar">
+            <input type="number" id="deposit_value" class="form-control" step="0.01" min="0" placeholder="Digite o valor para depositar">
         </div>
         <button class="btn btn-success btn-block" id="btn_deposit">Depositar</button>
     </div>
@@ -31,7 +31,7 @@
     <div id="transfer_form" class="operation-forms d-none">
         <div class="form-group">
             <label for="transfer_value">Valor:</label>
-            <input type="number" id="transfer_value" class="form-control" step="0.01" placeholder="Digite o valor da transferência">
+            <input type="number" id="transfer_value" class="form-control" step="0.01" min="0" placeholder="Digite o valor da transferência">
         </div>
         <div class="form-group">
             <label for="transfer_account">Conta de destino:</label>
@@ -88,6 +88,20 @@
             }
         })
 
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value < 0) {
+                    e.target.value = 0;
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                // Impede a digitação de valores negativos (quando pressionar a tecla de "-" no teclado)
+                if (e.key === '-' || e.key === 'e') {
+                    e.preventDefault();
+                }
+            });
+        });
 
         document.getElementById('transfer_account').addEventListener('input', (e) => {
             const input = event.target;
