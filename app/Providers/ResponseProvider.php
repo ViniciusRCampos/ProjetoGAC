@@ -15,10 +15,20 @@ class ResponseProvider
 
     public function error($message, $statusCode = 400)
     {
+
+        $errorMessages = [
+            400 => 'Requisição inválida.',
+            404 => 'Recurso não encontrado.',
+            422 => 'Erro de validação.',
+            500 => 'Erro interno no servidor.',
+        ];
+
+        $defaultMessage = $errorMessages[$statusCode] ?? 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+
         return response()->json([
             'status' => 'error',
-            'message' => $message,
+            'message' => $message ?: $defaultMessage,
             'data' => null
-        ], $statusCode);
+        ], $statusCode ?: 500);
     }
 }
