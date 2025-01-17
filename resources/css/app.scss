@@ -1,0 +1,12 @@
+// Sobrescrevendo variáveis de cores do Bootstrap
+$primary: #002A54; // Azul principal
+$secondary: #E6C35F; // Contraste
+$info: #003163; // Azul claro
+$light: #FFFFFF; // Branco
+$dark: #000B2D; // Azul escuro
+
+// Ajustes adicionais
+$body-bg: #000B2D; // Fundo do site
+$body-color: #FFFFFF; // Cor do texto
+
+@import "bootstrap/scss/bootstrap";
