@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as SupportCollection;
+
 /**
  * class BalanceLog
  * 
@@ -28,8 +30,8 @@ class BalanceLog extends Model
     ];
 
     protected $casts = [
-        'amount'=> 'decimal:2',
-        'processed_at'=> 'datetime'
+        'amount' => 'decimal:2',
+        'processed_at' => 'datetime'
     ];
 
     /**
@@ -54,9 +56,25 @@ class BalanceLog extends Model
         return $log;
     }
 
-    public static function getHistory(int $accountId): array|Collection
+    public static function getHistory(int $accountId): SupportCollection|Collection
     {
-        $history = self::where('account_id', $accountId)->get();
+        $history = $history = self::where('account_id', $accountId)
+            ->with(['operationLog.actions'])
+            ->orderByDesc('id')
+            ->get()
+            ->map(function ($balanceLog) {
+                return [
+                    'id' => $balanceLog->id,
+                    'amount' => $balanceLog->amount,
+                    'description' => $balanceLog->description,
+                    'processed_at' => $balanceLog->processed_at,
+                    'created_at' => $balanceLog->created_at,
+                    'updated_at' => $balanceLog->updated_at,
+                    'account_id' => $balanceLog->account_id,
+                    'operation_id' => $balanceLog->operation_id,
+                    'action_id' => $balanceLog->operationLog->actions->id,
+                ];
+            });
 
         return $history;
     }

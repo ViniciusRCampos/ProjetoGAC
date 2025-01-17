@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('description');
             $table->dateTime('processed_at')->nullable();
             $table->timestamps();
-            
-            $table->foreignId('account_id')->constrained()->onDelete('restrict')->index();
-            $table->foreignId('operation_id')->constrained()->onDelete('restrict')->index();
+
+
+            $table->foreignId('account_id')->constrained('accounts', 'id')->onDelete('restrict')->index()->name('fk_account_id');;
+            $table->foreignId('operation_id')->constrained('operation_logs', 'id')->onDelete('restrict')->index()->name('fk_balance_logs_operation_id');;
         });
     }
 

@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @param float $balance
+ * @param string $account_number
+ * @param bool $active
+ * @param int $user_id
+ */
 class Account extends Model
 {
     use HasFactory;
@@ -34,7 +40,7 @@ class Account extends Model
                 $number = str_pad(mt_rand(1, 99999999), 10, '0', STR_PAD_LEFT);
             } while (self::where('account_number', $number)->exists());
 
-            $account->accountNumber = $number;
+            $account->account_number = $number;
         });
     }
     /**

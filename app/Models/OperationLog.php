@@ -17,7 +17,8 @@ class OperationLog extends Model
         'fulfilled_at',
         'action_id',
         'from_account_id',
-        'to_account_id'
+        'to_account_id',
+        'origin_operation_id',
     ];
 
     protected $casts = [
