@@ -23,7 +23,7 @@
     <div id="deposit_form" class="operation-forms">
         <div class="form-group">
             <label for="deposit_value">Valor:</label>
-            <input type="number" id="deposit_value" class="form-control" placeholder="Digite o valor para depositar">
+            <input type="number" id="deposit_value" class="form-control" step="0.01" placeholder="Digite o valor para depositar">
         </div>
         <button class="btn btn-success btn-block" id="btn_deposit">Depositar</button>
     </div>
@@ -31,7 +31,7 @@
     <div id="transfer_form" class="operation-forms d-none">
         <div class="form-group">
             <label for="transfer_value">Valor:</label>
-            <input type="number" id="transfer_value" class="form-control" placeholder="Digite o valor da transferência">
+            <input type="number" id="transfer_value" class="form-control" step="0.01" placeholder="Digite o valor da transferência">
         </div>
         <div class="form-group">
             <label for="transfer_account">Conta de destino:</label>
@@ -79,6 +79,14 @@
         const refundTableBody = document.getElementById('refund_table_body'); // Corpo da tabela
         const transferAccountInput = document.getElementById('transfer_account');
         const spinner = document.getElementById('spinner'); // Spinner de carregamento
+        const transferAmount = document.getElementById('transfer_value');
+
+        transferAmount.addEventListener('input', (e) => {
+            const amount = parseFloat(e.target.value);
+            if (amount > balance) {
+                e.target.value = balance.toFixed(2);
+            }
+        })
 
 
         document.getElementById('transfer_account').addEventListener('input', (e) => {
@@ -165,7 +173,7 @@
                         refundTableBody.querySelectorAll('.btn-danger').forEach(button => {
                             button.addEventListener('click', (e) => {
                                 const operationData = data.data.find(item => item.operation_id == e.target.getAttribute('data-id'));
-                                
+
                                 const operationId = button.getAttribute('data-id');
                                 let valorEstorno = parseFloat(operationData.amount);
                                 if (valorEstorno > balance && operationData.fulfilled) {
